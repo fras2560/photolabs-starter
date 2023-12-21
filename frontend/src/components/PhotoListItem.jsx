@@ -12,7 +12,7 @@ const PhotoListItem = (props) => {
         toggleFavorite={props.toggleFavorite}
         photoId={props.id}
       ></PhotoFavButton>
-      <img src={props.urls.regular} className="photo-list__image"></img>
+      <img src={props.urls.regular} className="photo-list__image" onClick={() => props.showPhoto(props)}></img>
       <div className="photo-list__user-details">
         <img src={props.user.profile} className="photo-list__user-profile"></img>
         <div className="photo-list__user-info">

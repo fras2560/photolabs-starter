@@ -26,7 +26,12 @@ const HomeRoute = (props) => {
   return (
     <div className="home-route">
       <TopNavigation topics={props.topics} hasFavorite={hasFavorite}></TopNavigation>
-      <PhotoList photos={props.photos} favorites={favorites} toggleFavorite={toggleFavorite}></PhotoList>
+      <PhotoList
+        photos={props.photos}
+        favorites={favorites}
+        toggleFavorite={toggleFavorite}
+        showPhoto={props.showPhoto}
+      ></PhotoList>
     </div>
   );
 };
