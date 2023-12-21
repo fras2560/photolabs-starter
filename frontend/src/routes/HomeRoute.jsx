@@ -21,9 +21,11 @@ const HomeRoute = (props) => {
     photo.favorite = favorites.includes(photo.id);
     return photo;
   });
+
+  const hasFavorite = favorites.length > 0;
   return (
     <div className="home-route">
-      <TopNavigation topics={props.topics}></TopNavigation>
+      <TopNavigation topics={props.topics} hasFavorite={hasFavorite}></TopNavigation>
       <PhotoList photos={props.photos} favorites={favorites} toggleFavorite={toggleFavorite}></PhotoList>
     </div>
   );
