@@ -10,6 +10,7 @@ const HomeRoute = (props) => {
       <TopNavigation
         topics={props.topics}
         hasFavorite={props.hasFavorite}
+        onLoadTopic={props.onLoadTopic}
       ></TopNavigation>
       <PhotoList
         photos={props.photos}

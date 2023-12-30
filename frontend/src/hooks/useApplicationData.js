@@ -61,12 +61,7 @@ export default function useApplicationData() {
   const [state, dispatch] = useReducer(reducer, initialState);
   
   useEffect(() => {
-    fetch("/api/photos")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Photos", data);
-        dispatch({type: ACTIONS.SET_PHOTO_DATA, payload: data});
-      });
+    loadPhotos();
   }, []);
 
   useEffect(() => {
@@ -78,11 +73,32 @@ export default function useApplicationData() {
       });
   }, []);
 
+  const loadPhotos = () => {
+    fetch("/api/photos")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Photos", data);
+        dispatch({type: ACTIONS.SET_PHOTO_DATA, payload: data});
+      });
+  };
+
+  const loadTopic = (topicId) => {
+    if (topicId) {
+      fetch(`/api/topics/photos/${topicId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          dispatch({type: ACTIONS.SET_PHOTO_DATA, payload: data});
+        });
+    } else {
+      loadPhotos();
+    }
+  };
+
   return {
     state: state,
     onPhotoSelect: (photo) => dispatch({type: ACTIONS.SELECT_PHOTO, payload: {photo: photo} }),
     updateToFavPhotoIds: (photoId) => dispatch({type: ACTIONS.FAV_PHOTO_ADDED, payload: {photoId: photoId}}),
-    onLoadTopic: () => null,
+    onLoadTopic: (topicId) => loadTopic(topicId),
     onClosePhotoDetailsModal: () => dispatch({type: ACTIONS.SELECT_PHOTO, payload: {photo: null} })
   };
 }
