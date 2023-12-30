@@ -1,7 +1,5 @@
-import {useReducer} from 'react';
+import {useReducer, useEffect} from 'react';
 
-import photos from 'mocks/photos';
-import topics from 'mocks/topics';
 
 export const ACTIONS = {
   FAV_PHOTO_ADDED: 'FAV_PHOTO_ADDED',
@@ -13,7 +11,6 @@ export const ACTIONS = {
 };
 
 const reducer = (state, action) => {
-  console.log(state);
   switch (action.type) {
   case ACTIONS.FAV_PHOTO_ADDED:
   case ACTIONS.FAV_PHOTO_REMOVED: {
@@ -27,9 +24,9 @@ const reducer = (state, action) => {
     return {...state, favorites: favorites, photos: photos, hasFavorite: favorites.length > 0};
   }
   case ACTIONS.SET_PHOTO_DATA:
-    return {...state};
+    return {...state, photos: transformPhoto(action.payload, state.favorites)};
   case ACTIONS.SET_TOPIC_DATA:
-    return {...state, topics: topics};
+    return {...state, topics: action.payload};
   case ACTIONS.SELECT_PHOTO:
     return {...state, selectedPhoto: action.payload.photo};
   case ACTIONS.DISPLAY_PHOTO_DETAILS:
@@ -55,13 +52,31 @@ const transformPhoto = (photos, favorites) => {
 const initialState = {
   favorites: [],
   selectedPhoto: null,
-  topics: topics,
-  photos: transformPhoto(photos, []),
+  topics: [],
+  photos: transformPhoto([], []),
   hasFavorite: false,
 };
 
 export default function useApplicationData() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  
+  useEffect(() => {
+    fetch("/api/photos")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Photos", data);
+        dispatch({type: ACTIONS.SET_PHOTO_DATA, payload: data});
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/topics")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Topics" ,data);
+        dispatch({type: ACTIONS.SET_TOPIC_DATA, payload: data});
+      });
+  }, []);
 
   return {
     state: state,
