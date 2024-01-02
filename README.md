@@ -3,6 +3,9 @@ The PhotoLabs project for the Web Development React course programming.
 
 # Photolabs
 
+!["Photo Labs"](/docs/photo-labs.png)
+!["Photo Labs Modal"](/docs/photo-labs-modal.png)
+
 ## Setup
 
 Install dependencies with `npm install` in each respective `/frontend` and `/backend`.
@@ -22,3 +25,5 @@ Read `backend/readme` for further setup details.
 cd backend
 npm start
 ```
+
+
